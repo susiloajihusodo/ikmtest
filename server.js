@@ -133,7 +133,7 @@ async function createApp(options = {}) {
       }
       if (!['GET','HEAD'].includes(req.method)) fail(405,'Metode tidak diizinkan.');
       const relative = pathname === '/' ? 'index.html' : pathname.slice(1);
-      if (!['index.html','app.js','motion.js','styles.css'].includes(relative) && !/^assets\/[a-zA-Z0-9_-]+\.(svg|png|jpg|jpeg|webp)$/.test(relative)) fail(404,'Tidak ditemukan.');
+      if (!['index.html','app.js','motion.js','styles.css','supabase-config.js'].includes(relative) && !/^assets\/[a-zA-Z0-9_-]+\.(svg|png|jpg|jpeg|webp)$/.test(relative)) fail(404,'Tidak ditemukan.');
       const types = { '.html':'text/html; charset=utf-8', '.css':'text/css; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.jpeg':'image/jpeg', '.webp':'image/webp' };
       let data; try { data = await fs.promises.readFile(path.join(__dirname,relative)); } catch { fail(404,'Tidak ditemukan.'); }
       res.writeHead(200,{ 'Content-Type':types[path.extname(relative)] }); res.end(req.method === 'HEAD' ? undefined : data);

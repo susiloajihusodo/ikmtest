@@ -1,4 +1,4 @@
-import { supabase } from './supabase-config.js';
+const supabase = window.supabaseClient;
 
 const icons = {
   code: '<path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 16"/>',
@@ -111,6 +111,16 @@ async function deleteFromStorage(path) {
 const authReady = new Promise(resolve => {
   supabase.auth.onAuthStateChange((_event, session) => {
     authenticated = !!session;
+  });
+  Promise.race([
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      authenticated = !!session;
+    }),
+    new Promise(r => setTimeout(r, 10000))
+  ]).then(() => {
+    resolve();
+  }).catch(() => {
+    authenticated = false;
     resolve();
   });
 });
@@ -241,7 +251,7 @@ function loginModal() {
       authenticated = true;
       render();
       notifyUser('Berhasil login. Konten siap dikelola.');
-    } catch (err) { error.textContent = 'Email atau password salah.'; }
+    } catch (err) { error.textContent = err.message || 'Email atau password salah.'; }
     finally { button.disabled = false; button.textContent = 'Masuk sebagai admin ↗'; }
   });
 }
