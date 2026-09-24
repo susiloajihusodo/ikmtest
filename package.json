@@ -1,0 +1,15 @@
+{
+  "name": "ikm-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Website organisasi Ikatan Keluarga Mahasiswa",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "check": "node --check app.js && node --check motion.js && node --check server.js",
+    "test": "node --test server.test.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.4"
+  }
+}
